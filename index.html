@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sign up with Google</title>
+</head>
+<body>
+  <h1>Sign up with Google</h1>
+  <form>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email"><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br><br>
+    <button type="button" onclick="signUpWithGoogle()">Sign up with Google</button>
+  </form>
+  
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+  <!-- Firebase configuration -->
+
+
+  <!-- Your JavaScript code -->
+  <script>
+     let firebaseConfig = {
+          apiKey: "AIzaSyB2dc7G54nZg1H-tKUbxRtWmADEQxRJv10",
+          authDomain: "simple-login-page-736b4.firebaseapp.com",
+          databaseURL: "https://simple-login-page-736b4-default-rtdb.firebaseio.com",
+          projectId: "simple-login-page-736b4",
+          storageBucket: "simple-login-page-736b4.appspot.com",
+          messagingSenderId: "787439045671",
+          appId: "1:787439045671:web:7f597366a3893300fed202",
+          measurementId: "G-WTGQ0B68PM"
+        };
+        firebase.initializeApp(firebaseConfig)
+        let database = firebase.firestore()
+
+        // Get a reference to the Firebase Auth service
+var auth = firebase.auth();
+
+// Function to sign up with Google
+function signUpWithGoogle() {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then(function(result) {
+      // Successful sign-up with Google, create a new Firebase user account
+      var user = result.user;
+      firebase.auth().createUserWithEmailAndPassword(user.email, user.uid)
+        .then(function() {
+          // Redirect the user to the dashboard or another page
+          window.location.href = "dashboard.html";
+        })
+        .catch(function(error) {
+          // Handle errors
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(errorCode + ": " + errorMessage);
+        });
+    })
+    .catch(function(error) {
+      // Handle errors
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode + ": " + errorMessage);
+    });
+}
+  </script>
+</body>
+</html>
